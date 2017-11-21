@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Paper from 'material-ui/Paper';
 import featuresData from '../../camp_features';
-import CampFeatures from '../CampFeatures'
+import FeaturesList from '../FeaturesList';
 import './App.css';
 
 class App extends Component {
@@ -12,7 +12,7 @@ class App extends Component {
           <h1 className="AppTitle">Camp Features</h1>
         </header>
 
-        <CampFeatures features={featuresData}/>
+        <FeaturesList features={featuresData}/>
       </Paper>
     );
   }
