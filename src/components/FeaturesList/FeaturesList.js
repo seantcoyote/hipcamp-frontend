@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {object, array} from 'prop-types';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {List, ListItem} from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
 
@@ -8,13 +9,15 @@ class FeaturesList  extends Component {
     super(props);
     this.state = {
       open: false
-    }
+    };
   }
 
   getListItems (features) {
-    const itemPresentTitle = {color: '#777'}
+    // Inline styles work better (than classNames) for overriding material-ui defaults
+    const itemTitle = {color: '#777', letterSpacing: 1}
+    const itemPresentTitle = {...itemTitle}
     const itemAbsentTitle = {
-      color: '#777',
+      ...itemTitle,
       textDecoration: 'line-through',
       opacity: 0.3
     }
@@ -33,10 +36,10 @@ class FeaturesList  extends Component {
       <ListItem
         key={feature.title}
         onNestedListToggle={this.handleToggle}
-        nestedItems={feature.subfeatures.length > 0 && this.getListItems(feature.subfeatures, this.handleToggle)}
+        nestedItems={feature.subfeatures && this.getListItems(feature.subfeatures, this.handleToggle)}
         leftIcon={feature.presence ? checkIcon : xIcon}
         primaryTogglesNestedList={true}
-        hoverColor={{color: 'transparent'}}
+        hoverColor="transparent"
         disabled={!feature.subfeatures.length > 0}
       >
         <span style={feature.presence ? itemPresentTitle : itemAbsentTitle}>{feature.title}</span>
@@ -52,15 +55,17 @@ class FeaturesList  extends Component {
 
   render () {
     return (
-      <List style={this.props.style}>
-        {this.getListItems(this.props.features)}
-      </List>
+      <MuiThemeProvider>
+        <List style={this.props.style}>
+          {this.props.features && this.getListItems(this.props.features)}
+        </List>
+      </MuiThemeProvider>
     )
   }
 }
 
 FeaturesList.propTypes = {
-  features: array.isRequired,
+  features: array,
   style: object
 }
 
